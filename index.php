@@ -40,6 +40,12 @@ $hotels = [
 ];
 ?>
 
+<!-- 
+prendiamo parking -->
+
+<?php
+$parking_true = $_GET["parking"] ?? false;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,6 +61,8 @@ $hotels = [
     <h1 class="text-center py-2">Php Hotels</h1>
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Hotel</h2>
+
+
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
                 <tr>
@@ -66,20 +74,36 @@ $hotels = [
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach($hotels as $hotel){
-                    echo "<tr>";
-                    echo "<td>" . $hotel["name"] . "</td>";
-                    echo "<td>" . $hotel["description"] . "</td>";
-                    echo "<td>" . ($hotel["parking"] ? "Disponibile" : "Non disponbiile") . "</td>";
-                    echo "<td>" . $hotel["vote"] . "</td>";
-                    echo "<td>" . $hotel["distance_to_center"] . "Km" . "</td>";
-                    echo "</tr>";
+                <?php //tabella stilizzata con bootstrap, modificando il modo di mostrare in pagina il risultato dii chiavi e valori
+                foreach ($hotels as $hotel) {
+                    if (!$parking_true || $hotel['parking'] == true) {
+                        echo "<tr>";
+                        echo "<td>" . $hotel["name"] . "</td>";
+                        echo "<td>" . $hotel["description"] . "</td>";
+                        echo "<td>" . ($hotel["parking"] ? "Disponibile" : "Non disponbiile") . "</td>";
+                        echo "<td>" . $hotel["vote"] . "</td>";
+                        echo "<td>" . $hotel["distance_to_center"] . "Km" . "</td>";
+                        echo "</tr>";
                     }
+                }
                 ?>
             </tbody>
         </table>
     </div>
-    
+    <form method="get" class="d-flex justify-content-center align-items-center gap-2">
+        <div class="form-check ">
+            <input class="form-check-input" type="checkbox" name="parking" id="parking"
+                <?php // cosa inutile ma facciamola, facciamo una condizone cosi che il checkbox rimanga selezionato dopo aver filtrato
+                if ($parking_true) echo "checked"; 
+                ?>>
+            <label class="form-check-label" for="parking">
+                Mostra solo hotel con parcheggio
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Filtra</button>
+    </form>
+
+
 </body>
+
 </html>
