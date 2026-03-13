@@ -45,6 +45,8 @@ prendiamo parking -->
 
 <?php
 $parking_true = $_GET["parking"] ?? false;
+
+$voto_maggiore = $_GET["vote"] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +78,9 @@ $parking_true = $_GET["parking"] ?? false;
             <tbody>
                 <?php //tabella stilizzata con bootstrap, modificando il modo di mostrare in pagina il risultato dii chiavi e valori
                 foreach ($hotels as $hotel) {
-                    if (!$parking_true || $hotel['parking'] == true) {
+                    if ((!$parking_true || $hotel['parking'] == true) && 
+                    (!$voto_maggiore || $hotel['vote'] >= $voto_maggiore)) {
+                    
                         echo "<tr>";
                         echo "<td>" . $hotel["name"] . "</td>";
                         echo "<td>" . $hotel["description"] . "</td>";
@@ -86,6 +90,8 @@ $parking_true = $_GET["parking"] ?? false;
                         echo "</tr>";
                     }
                 }
+
+                
                 ?>
             </tbody>
         </table>
@@ -99,6 +105,9 @@ $parking_true = $_GET["parking"] ?? false;
             <label class="form-check-label" for="parking">
                 Mostra solo hotel con parcheggio
             </label>
+        </div>
+        <div>
+            <input type="number" name=vote min="1" max="5">
         </div>
         <button type="submit" class="btn btn-primary mt-2">Filtra</button>
     </form>
